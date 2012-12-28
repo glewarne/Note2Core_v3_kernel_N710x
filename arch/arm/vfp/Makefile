@@ -7,7 +7,9 @@
 # ccflags-y := -DDEBUG
 # asflags-y := -DDEBUG
 
-KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-msoft-float=-Wa,-mfpu=softvfp+vfp)
+# changed to NEON (simd coprocessor), must also add -funsafe-math-optimizations to primary makefile
+# according to gcc toolchain documentation
+KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-mhard-float=-Wa,-mfpu=neon)
 LDFLAGS		+=--no-warn-mismatch
 
 obj-y			+= vfp.o

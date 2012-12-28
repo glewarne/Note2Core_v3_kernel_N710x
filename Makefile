@@ -375,7 +375,9 @@ KBUILD_CFLAGS   := -Wundef                                \
 		   -Werror-implicit-function-declaration  \
 		   -Wno-format-security                   \
 		   -fno-strict-aliasing                   \
-		   -fno-delete-null-pointer-checks        
+		   -fno-delete-null-pointer-checks        \
+		   -mfpu=neon                             \
+		   -funsafe-math-optimizations
 
 
 KBUILD_AFLAGS_KERNEL :=
