@@ -193,8 +193,11 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?= arm
-#CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
-CROSS_COMPILE = /opt/toolchains/arm-eabi-4.4.3/bin/arm-eabi-
+
+# CROSS_COMPILER location
+# Google NDK GCC 4.7 toolchain from https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7
+CROSS_COMPILE	?= ../toolchain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
+
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -365,11 +368,16 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
 
 KBUILD_CPPFLAGS := -D__KERNEL__
 
-KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
-		   -fno-strict-aliasing -fno-common \
-		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks
+KBUILD_CFLAGS   := -Wundef                                \
+		   -Wstrict-prototypes                    \
+		   -Wno-trigraphs                         \
+		   -fno-common                            \
+		   -Werror-implicit-function-declaration  \
+		   -Wno-format-security                   \
+		   -fno-strict-aliasing                   \
+		   -fno-delete-null-pointer-checks        
+
+
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
@@ -560,9 +568,11 @@ endif # $(dot-config)
 all: vmlinux
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS	+= -Os
+	KBUILD_CFLAGS += -Os
+else ifdef CONFIG_CC_OPTIMIZE_FOR_SPEED
+	KBUILD_CFLAGS += -O3
 else
-KBUILD_CFLAGS	+= -O2
+	KBUILD_CFLAGS += -O2
 endif
 
 ifdef CONFIG_CC_CHECK_WARNING_STRICTLY
@@ -571,6 +581,10 @@ KBUILD_CFLAGS	+= -fdiagnostics-show-option -Werror \
 		   -Wno-error=unused-variable \
 		   -Wno-error=unused-value \
 		   -Wno-error=unused-label
+endif
+
+ifdef CONFIG_CC_NOWARN
+	KBUILD_CFLAGS	+= -w
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
