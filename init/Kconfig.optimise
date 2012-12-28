@@ -1,0 +1,157 @@
+menu "Kernel Optimization Options"
+
+
+choice
+    prompt "Compiler optimization level"
+    default CC_OPTIMIZE_FOR_NORMAL
+    help
+      This option selects the compilation optimization level.
+
+    config CC_OPTIMIZE_FOR_SIZE
+	bool "Optimize for size -Os"
+	help
+	  Enabling this option will pass "-Os" instead of "-O2" to gcc
+	  resulting in a smaller kernel.
+	  
+
+    config CC_OPTIMIZE_FOR_NORMAL
+	bool "Optimize normally -O2"
+	help
+	  Enabling this option will pass "-O2" to gcc
+	  resulting in a larger kernel compared to -Os but with possible,
+	  minor performance improvements.
+	  
+	  This is the recommended setting
+	  
+
+    config CC_OPTIMIZE_FOR_SPEED
+	bool "Optimize for speed -O3"
+	help
+	  Enabling this option will pass "-O3" to gcc
+	  resulting in a larger kernel but possible higher performance
+	  compared with -O2
+	  
+	  -O3 can cause problems with applications however and is not recommended
+	  
+	  
+endchoice
+
+choice
+  prompt "CPU frequency level"
+  default OC_SIXTEEN
+  help
+    This sets the Maximum CPU frequency level"
+    
+  config OC_SIXTEEN
+    bool "Standard 1.6ghz clock speed"
+    help
+      Use the default 1.6GHZ clock speed
+
+  config OC_EIGHTEEN
+    bool "Enable 1.8ghz Overclock"
+    help
+      Enable CPU Overclock to 1.8ghz
+
+  config OC_NINETEEN
+    bool "Enable 1.9ghz Overclock"
+    help
+      Enable CPU Overclock to 1.9ghz  This is NOT guranteed to work an all hardware
+      
+endchoice
+      
+config FSYNC_OFF
+    bool "Disable filesystem FSync() function"
+    help
+      Disable the FSync() file system command.  This will improve IO performance
+      at the cost of a small risk to data integrity
+
+config MALI_CPU_LOCK_OFF
+    bool "Disable MALI GPU cpu lock feature"
+    help
+      Disable the MALI GPU CPU frequency locks for a more responsive system
+
+config CC_NOWARN
+    bool "Supress all compilation warnings"
+    help
+      Pass -w to gcc to supress all compilations warnings
+      
+config CC_VM_CHANGE
+    bool "Adjust standard VM settings"
+    help
+      Adjust some standard VM memory settings for better system performance
+      
+
+choice
+    prompt "VM Dirty Backgroud Ratio"
+    depends on CC_VM_CHANGE
+    default DIRTY_THIRTY
+    help
+      This option sets the amount of dirty memory that can be used
+      before write-outs occur.  Default is 10%
+    
+    config DIRTY_TEN
+	bool "Set VM Dirty Background Ratio to 10% - DEFAULT"
+
+    config DIRTY_TWENTY
+	bool "Set VM Dirty Background Ratio to 20%"
+
+    config DIRTY_THIRTY
+	bool "Set VM Dirty Background Ratio to 30%"
+
+    config DIRTY_FOURTY
+	bool "Set VM Dirty Background Ratio to 40%"
+endchoice
+
+choice
+    prompt "VM Dirty Ratio"
+    default RDIRTY_SIXTY
+    depends on CC_VM_CHANGE
+    help
+      This option sets the total percentage of memory that can be used
+      by dirty data.  Default is 30%
+      
+    config RDIRTY_THIRTY
+	bool "Set VM Dirty Ratio to 30% - DEFAULT"
+
+    config RDIRTY_FOURTY
+	bool "Set VM Dirty Ratio to 40%"
+
+    config RDIRTY_SIXTY
+	bool "Set VM Dirty Ratio to 60%"
+
+    config RDIRTY_EIGHTY
+	bool "Set VM Dirty Ratio to 80%"
+endchoice 
+
+
+choice
+    prompt "VM global readahead settings"
+    depends on CC_VM_CHANGE
+    default VM_MIN
+    help
+      These options set the VM global readahead values throughout the kernel
+    
+config VM_NONE
+    bool "No VM readahead"
+    help
+      This sets the VM readahead function to 0kb-Max 0kb-Min
+
+config VM_MIN
+    bool "Minimal VM readahead"
+    help
+      This sets the VM readahead function to 128kb-Max 16kb-Min
+      These are the default values
+
+config VM_NORMAL
+    bool "Normal VM readahead"
+    help
+      This sets the VM readahead function to 256kb-Max 16kb-Min
+    
+config VM_MAX
+    bool "Maximum VM readahead"
+    help
+      This sets the VM readahead function to 1024kb-Max 16kb-Min
+endchoice
+
+
+endmenu
