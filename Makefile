@@ -378,7 +378,8 @@ KBUILD_CFLAGS   := -Wundef                                \
 		   -fno-delete-null-pointer-checks        \
 		   -mfpu=vfpv3                            \
 		   -mcpu=cortex-a9                        \
-		   -march=armv7-a
+		   -march=armv7-a                         \
+		   -pipe
 
 
 KBUILD_AFLAGS_KERNEL :=
