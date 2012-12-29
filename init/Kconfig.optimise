@@ -70,10 +70,25 @@ config MALI_CPU_LOCK_OFF
     help
       Disable the MALI GPU CPU frequency locks for a more responsive system
 
+choice
+prompt "Compilation warnings and checks"
+default CC_NOWARN
+    help
+      Choose between stopping compilation for every warning
+      or ignoring every warning during compilation
+	
+config CC_CHECK_WARNING_STRICTLY
+    bool "Check warnings more strictly"
+    help
+      Enabling this option will pass "-Werror" to gcc, making any warning
+      encountered during compile to cause the process to halt
+
 config CC_NOWARN
     bool "Supress all compilation warnings"
     help
       Pass -w to gcc to supress all compilations warnings
+
+endchoice
       
 config CC_VM_CHANGE
     bool "Adjust standard VM settings"
@@ -153,5 +168,26 @@ config VM_MAX
       This sets the VM readahead function to 1024kb-Max 16kb-Min
 endchoice
 
+
+config MMAP_ALLOW_UNINITIALIZED
+	bool "Allow mmapped anonymous memory to be uninitialized"
+	default y
+	help
+	  Normally, and according to the Linux spec, anonymous memory obtained
+	  from mmap() has it's contents cleared before it is passed to
+	  userspace.  Enabling this config option allows you to request that
+	  mmap() skip that if it is given an MAP_UNINITIALIZED flag, thus
+	  providing a huge performance boost.  If this option is not enabled,
+	  then the flag will be ignored.
+
+	  This is taken advantage of by uClibc's malloc(), and also by
+	  ELF-FDPIC binfmt's brk and stack allocator.
+
+	  Because of the obvious security issues, this option should only be
+	  enabled on embedded devices where you control what is run in
+	  userspace.  Since that isn't generally a problem on no-MMU systems,
+	  it is normally safe to say Y here.
+
+	  See Documentation/nommu-mmap.txt for more information.
 
 endmenu
