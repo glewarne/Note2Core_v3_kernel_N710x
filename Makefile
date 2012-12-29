@@ -195,8 +195,8 @@ export KBUILD_BUILDHOST := $(SUBARCH)
 ARCH		?= arm
 
 # CROSS_COMPILER location
-# Google NDK GCC 4.4.3
-CROSS_COMPILE	?= ../toolchain/arm-eabi-4.4.3/bin/arm-eabi-
+# Google NDK GCC 4.7
+CROSS_COMPILE	?= ../toolchain/arm-eabi-4.7/bin/arm-eabi-
 
 
 # Architecture as present in compile.h
