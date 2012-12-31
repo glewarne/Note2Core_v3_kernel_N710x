@@ -7,8 +7,8 @@
 # ccflags-y := -DDEBUG
 # asflags-y := -DDEBUG
 
-# changed to vfpv3 (simd coprocessor)
-KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-mhard-float=-Wa,-mfpu=vfpv3)
+# changed to NEON (simd coprocessor)
+KBUILD_AFLAGS	:=$(KBUILD_AFLAGS:-mhard-float=-Wa,-mfpu=neon)
 LDFLAGS		+=--no-warn-mismatch
 
 obj-y			+= vfp.o
