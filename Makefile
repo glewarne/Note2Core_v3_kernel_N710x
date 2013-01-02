@@ -378,9 +378,9 @@ KBUILD_CFLAGS   := -Wundef                                \
 		   -fno-delete-null-pointer-checks        \
 		   -mfpu=neon                             \
 		   -funsafe-math-optimizations            \
+		   -ffast-math                            \
 		   -mcpu=cortex-a9                        \
-		   -march=armv7-a                         \
-		   -pipe
+		   -march=armv7-a
 
 
 KBUILD_AFLAGS_KERNEL :=
