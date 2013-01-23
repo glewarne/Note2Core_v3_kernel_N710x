@@ -196,7 +196,7 @@ ARCH		?= arm
 
 # CROSS_COMPILER location
 # Google NDK GCC 4.7
-CROSS_COMPILE	?= ../toolchain/arm-eabi-4.7/bin/arm-eabi-
+CROSS_COMPILE	?= ../toolchain/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
 
 
 # Architecture as present in compile.h
